@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import logo from './assets/logo.png'
+import logohome from './assets/logohome.png'
 import fotoPerusahaan from './assets/FotoPerusahaan.jpg'
 import toyota from './assets/brands/toyota.png'
 import honda from './assets/brands/honda.png'
@@ -129,7 +130,7 @@ function Home() {
       ))}
       <div className="absolute -right-24 top-0 bottom-0 w-[60%] skew-x-[-12deg] bg-gradient-to-b from-[#D62828]/25 to-transparent" />
       <div className="relative h-full max-w-6xl mx-auto px-6 flex flex-col justify-center">
-        <img src={logo} alt="SMBB Autoparts" className="w-[420px] sm:w-[500px] mb-6" />
+        <img src={logohome} alt="SMBB Autoparts" className="w-[420px] sm:w-[500px] mb-6" />
         <h1 className="chrome-text font-[Rajdhani] font-bold uppercase leading-[0.95] text-[clamp(1rem,4.2vw,3.2rem)] tracking-wide whitespace-nowrap">PT Selalu Maju Bersama Batam</h1>
         <p className="text-[#D62828] text-xl md:text-4xl mt-3 font-[Rajdhani] font-bold uppercase tracking-[0.15em]">Your Best Partner</p>
         <a href="#kontak" className="mt-8 inline-block bg-[#D62828] text-white font-[Rajdhani] font-bold uppercase tracking-wide px-7 py-3 w-fit hover:bg-[#b81f1f] transition">Hubungi Kami</a>
