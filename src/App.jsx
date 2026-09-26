@@ -250,7 +250,7 @@ function Testimoni() {
     <section id="testimoni" className="max-w-6xl mx-auto px-6 py-24">
       <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">Ulasan</p>
       <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-3">Kata Klien Kami</h2>
-      <p className="text-sm text-gray-500 mb-10 max-w-[62ch]">Contoh ulasan di bawah bersifat ilustratif. Ulasan Google asli perlu widget resmi (Google Business Profile embed) dengan API key milik bisnis Anda.</p>
+      <p className="text-sm text-gray-500 mb-10 max-w-[62ch]">Berikut adalah beberapa ulasan dari klien kami.</p>
       <div className="grid sm:grid-cols-3 gap-6">
         {testimonials.map((t, idx) => (
           <div key={idx} className="bg-[#0D0D0D] border border-white/10 p-6">
