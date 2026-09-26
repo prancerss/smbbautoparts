@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --red:#D62828;
+}
+html{scroll-behavior:smooth; scroll-padding-top:72px;}
+body{margin:0; background:#0A0A0A; color:#E5E5E5; font-family:'Inter',system-ui,sans-serif;}
+.fade{transition:opacity 1.2s ease}
+.chrome-text{
+  background:linear-gradient(180deg,#fff 0%,#c9cdd3 45%,#8b8f96 55%,#fff 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.marquee{animation:marquee 22s linear infinite}
+.marquee:hover{animation-play-state:paused}
