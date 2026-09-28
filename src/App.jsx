@@ -73,9 +73,9 @@ const products = [
   { t: "Perlengkapan Mobil", d: "Aksesoris dan perlengkapan tambahan untuk kenyamanan berkendara.", img: perlengkapan },
 ]
 const testimonials = [
-  { n: "Budi Santoso", r: "Stoknya lengkap dan barangnya original, jadi langganan tetap bengkel saya.", stars: 5 },
-  { n: "Linda Wijaya", r: "Pengiriman cepat dan harga bersaing dibanding toko lain di Batam.", stars: 5 },
-  { n: "Ahmad Fauzi", r: "Tim mereka paham kebutuhan bengkel, rekomendasi partnya selalu tepat.", stars: 4 },
+  { n: "Taurinus", r: "Untuk Suku Cadang Mobil pelayanan dan barang terbaik disini, rekomend banget!", stars: 5 },
+  { n: "Roma Ryo", r: "Harganya lumayan bersaing dengan toko yg lain, tidak terlalu menguras kantong lahh Mantappp!!!", stars: 5 },
+  { n: "EF", r: "Cari Sparepart Genuine Part terlengkap hanya di sini. Bukan kaleng-kaleng, Sparepart Genuine Part (berarti suku cadang asli yang diproduksi langsung oleh pabrikan resmi kendaraan atau mesin tersebut.)", stars: 5 },
 ]
 
 const whatsappNumbers = [
