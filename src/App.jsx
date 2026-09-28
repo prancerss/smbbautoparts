@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import logo from './assets/logo.png'
 import logohome from './assets/logohome.png'
 import fotoPerusahaan from './assets/FotoPerusahaan.jpg'
+import videoPerusahaan from './assets/vidio.mp4'
 import gudang from './assets/Gudang.jpg'
 import depan from './assets/depan.jpg'
 import load from './assets/load.jpg'
@@ -193,6 +194,25 @@ function About() {
               <p className="text-sm text-gray-400">Memberikan layanan prima dan solusi bernilai tinggi kepada customer kami, sehingga tercipta hubungan yang sangat baik dan berkesinambungan.</p>
           </div>
         </div>
+      </div>
+    </section>
+  )
+}
+
+function OurCompany() {
+  return (
+    <section className="bg-[#0D0D0D] border-y border-white/10 py-16 sm:py-20">
+      <div className="max-w-6xl mx-auto px-6">
+        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">SMBB Autoparts</p>
+        <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-8">Profile Company</h2>
+        <video
+          className="w-full aspect-video bg-black object-contain border border-white/10 rounded-3xl"
+          src={videoPerusahaan}
+          controls
+          playsInline
+          preload="metadata"
+          aria-label="Video perusahaan SMBB Autoparts"
+        />
       </div>
     </section>
   )
@@ -610,6 +630,7 @@ export default function App() {
       <Nav />
       <Home />
       <About />
+      <OurCompany />
       <Brand />
       <Product />
       <Partner />
