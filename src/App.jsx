@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import logo from './assets/logo.png'
 import logohome from './assets/logohome.png'
 import fotoPerusahaan from './assets/FotoPerusahaan.jpg'
+import gudang from './assets/Gudang.jpg'
+import depan from './assets/depan.jpg'
+import load from './assets/load.jpg'
 import toyota from './assets/brands/toyota.png'
 import honda from './assets/brands/honda.png'
 import suzuki from './assets/brands/suzuki.png'
@@ -32,9 +35,9 @@ import bosowa from './assets/partners/bosowa.png'
 import mpm from './assets/partners/mpm.png'
 
 const slides = [
-  { grad: "from-[#0A0A0A] via-[#1a0a0a] to-[#3a0d0d]" },
-  { grad: "from-[#120202] via-[#2a0808] to-[#0A0A0A]" },
-  { grad: "from-[#1a0a0a] via-[#0A0A0A] to-[#2a0d0d]" },
+  { img: gudang, grad: "from-[#0A0A0A] via-[#1a0a0a] to-[#3a0d0d]" },
+  { img: depan, grad: "from-[#120202] via-[#2a0808] to-[#0A0A0A]" },
+  { img: load, grad: "from-[#1a0a0a] via-[#0A0A0A] to-[#2a0d0d]" },
 ]
 const brandLogos = [
   { name: "Toyota", img: toyota },
@@ -73,9 +76,9 @@ const products = [
   { t: "Perlengkapan Mobil", d: "Aksesoris dan perlengkapan tambahan untuk kenyamanan berkendara.", img: perlengkapan },
 ]
 const testimonials = [
-  { n: "Taurinus", r: "Untuk Suku Cadang Mobil pelayanan dan barang terbaik disini, rekomend banget!", stars: 5 },
-  { n: "Roma Ryo", r: "Harganya lumayan bersaing dengan toko yg lain, tidak terlalu menguras kantong lahh Mantappp!!!", stars: 5 },
-  { n: "EF", r: "Cari Sparepart Genuine Part terlengkap hanya di sini. Bukan kaleng-kaleng, Sparepart Genuine Part (berarti suku cadang asli yang diproduksi langsung oleh pabrikan resmi kendaraan atau mesin tersebut.)", stars: 5 },
+  { n: "anonymous", r: "Untuk Suku Cadang Mobil pelayanan dan barang terbaik disini, rekomend banget!", stars: 5 },
+  { n: "anonymous", r: "Harganya lumayan bersaing dengan toko yg lain, tidak terlalu menguras kantong lahh Mantappp!!!", stars: 5 },
+  { n: "anonymous", r: "Cari Sparepart Genuine Part terlengkap hanya di sini. Bukan kaleng-kaleng, Sparepart Genuine Part (berarti suku cadang asli yang diproduksi langsung oleh pabrikan resmi kendaraan atau mesin tersebut.)", stars: 5 },
 ]
 
 const whatsappNumbers = [
@@ -119,21 +122,48 @@ function Nav() {
 
 function Home() {
   const [i, setI] = useState(0)
+
+  const goToNextSlide = () => {
+    setI((prev) => (prev + 1) % slides.length)
+  }
+
   useEffect(() => {
     const t = setInterval(() => setI(v => (v + 1) % slides.length), 4000)
     return () => clearInterval(t)
   }, [])
+
   return (
     <section id="home" className="relative h-[100svh] min-h-[560px] overflow-hidden bg-black">
       {slides.map((s, idx) => (
-        <div key={idx} className={`absolute inset-0 bg-gradient-to-br ${s.grad} fade`} style={{ opacity: idx === i ? 1 : 0 }} />
+        <div
+          key={idx}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${idx === i ? "opacity-100" : "opacity-0"}`}
+        >
+          <div className={`absolute inset-0 bg-gradient-to-br ${s.grad}`} />
+          <div className="absolute inset-0 overflow-hidden">
+            <img
+              src={s.img}
+              alt="SMBB Autoparts slide"
+              className="h-full w-full object-cover object-center opacity-60 scale-[1.15] sm:scale-105"
+            />
+          </div>
+          <div className="absolute inset-0 bg-black/35" />
+        </div>
       ))}
       <div className="absolute -right-24 top-0 bottom-0 w-[60%] skew-x-[-12deg] bg-gradient-to-b from-[#D62828]/25 to-transparent" />
-      <div className="relative h-full max-w-6xl mx-auto px-6 flex flex-col justify-center">
-        <img src={logohome} alt="SMBB Autoparts" className="w-[420px] sm:w-[500px] mb-6" />
-        <h1 className="chrome-text font-[Rajdhani] font-bold uppercase leading-[0.95] text-[clamp(1rem,4.2vw,3.2rem)] tracking-wide whitespace-nowrap">PT Selalu Maju Bersama Batam</h1>
-        <p className="text-[#D62828] text-xl md:text-4xl mt-3 font-[Rajdhani] font-bold uppercase tracking-[0.15em]">Your Best Partner</p>
-        <a href="#kontak" className="mt-8 inline-block bg-[#D62828] text-white font-[Rajdhani] font-bold uppercase tracking-wide px-7 py-3 w-fit hover:bg-[#b81f1f] transition">Hubungi Kami</a>
+      <button
+        type="button"
+        aria-label="Next slide"
+        onClick={goToNextSlide}
+        className="absolute right-3 sm:right-5 top-1/2 z-20 -translate-y-1/2 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/20 bg-black/30 text-xl sm:text-2xl text-white backdrop-blur-sm transition hover:border-[#D62828] hover:bg-[#D62828]/20"
+      >
+        →
+      </button>
+      <div className="relative z-10 h-full max-w-6xl mx-auto px-4 sm:px-6 flex flex-col justify-center items-start">
+        <img src={logohome} alt="SMBB Autoparts" className="w-[220px] sm:w-[420px] md:w-[500px] mb-4 sm:mb-6" />
+        <h1 className="chrome-text font-[Rajdhani] font-bold uppercase leading-[0.95] text-[clamp(1.2rem,5vw,3.2rem)] tracking-wide whitespace-normal sm:whitespace-nowrap max-w-[90vw]">PT Selalu Maju Bersama Batam</h1>
+        <p className="text-[#D62828] text-base sm:text-xl md:text-4xl mt-3 font-[Rajdhani] font-bold uppercase tracking-[0.1em] sm:tracking-[0.15em]">Your Best Partner</p>
+        <a href="#kontak" className="mt-6 sm:mt-8 inline-block bg-[#D62828] text-white font-[Rajdhani] font-bold uppercase tracking-wide px-5 py-2.5 sm:px-7 sm:py-3 w-fit hover:bg-[#b81f1f] transition">Hubungi Kami</a>
       </div>
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
         {slides.map((_, idx) => <span key={idx} className={`h-1.5 rounded-full transition-all ${idx === i ? "w-6 bg-[#D62828]" : "w-1.5 bg-white/30"}`} />)}
