@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import logo from './assets/logo.png'
 import logohome from './assets/logohome.png'
 import fotoPerusahaan from './assets/FotoPerusahaan.jpg'
@@ -40,7 +40,92 @@ import etiqa from './assets/partners/etiqa.png'
 import reliance from './assets/partners/reliance.png'
 import mega from './assets/partners/mega.png'
 import bosowa from './assets/partners/bosowa.png'
-import mpm from './assets/partners/mpm.png'
+
+
+const englishTranslations = {
+  "Tentang": "About", "Kantor": "Office", "Brand": "Brands", "Produk": "Products",
+  "Mitra": "Partners", "Testimoni": "Testimonials", "Kontak": "Contact",
+  "Buka menu": "Open menu", "Tutup menu": "Close menu", "Pilih bahasa": "Choose language", "Bahasa Indonesia": "Indonesian",
+  "SMBB Autoparts slide": "SMBB Autoparts slideshow", "Slide berikutnya": "Next slide", "Hubungi Kami": "Contact Us",
+  "Tentang Kami": "About Us",
+  "Kantor Kami": "Our Office", "Kantor SMBB Autoparts": "SMBB Autoparts office",
+  "SMBB Autoparts hadir sebagai penyedia suku cadang berkualitas di Kota Batam, melayani bengkel dan pelanggan perorangan dengan stok lengkap dan original.": "SMBB Autoparts provides quality auto parts in Batam, serving repair shops and individual customers with a complete range of genuine parts.",
+  "Kami memilih setiap produk yang sudah sesuai dengan peraturan dan ketentuan yang berlaku.": "We carefully select products that comply with applicable rules and regulations.",
+  "Visi": "Vision",
+  "Menjadikan perusahaan SMBB AutoParts sebagai perusahaan berkelas di tingkat nasional dengan layanan service terbaik dan bersahabat.": "To make SMBB AutoParts a nationally recognized company, known for excellent and friendly service.",
+  "Misi": "Mission",
+  "Memberikan layanan prima dan solusi bernilai tinggi kepada customer kami, sehingga tercipta hubungan yang sangat baik dan berkesinambungan.": "To provide excellent service and valuable solutions that build lasting relationships with our customers.",
+  "Area Resepsionis": "Reception Area", "Resepsionis kantor SMBB Autoparts": "SMBB Autoparts office reception area",
+  "Tampak Depan": "Front Exterior", "Tampak depan kantor SMBB Autoparts": "Exterior of the SMBB Autoparts office",
+  "Ruang Meeting": "Meeting Room", "Ruang meeting kantor SMBB Autoparts": "Meeting room at the SMBB Autoparts office",
+  "Area Gudang": "Warehouse", "Rak penyimpanan suku cadang di gudang SMBB Autoparts": "Auto parts storage shelves at the SMBB Autoparts warehouse",
+  "Rak Bumper": "Bumper Racks", "Rak penyimpanan bumper mobil di gudang SMBB Autoparts": "Car bumper storage racks at the SMBB Autoparts warehouse",
+  "Rak Kaca Mobil": "Car Window Racks", "Rak penyimpanan kaca mobil di gudang SMBB Autoparts": "Car window storage racks at the SMBB Autoparts warehouse",
+  "Rak Lampu Mobil": "Car Light Racks", "Rak penyimpanan lampu mobil di gudang SMBB Autoparts": "Car light storage racks at the SMBB Autoparts warehouse",
+  "Rak Pintu & Kap Mesin": "Door & Hood Racks", "Rak penyimpanan pintu dan kap mesin mobil di gudang SMBB Autoparts": "Car door and hood storage racks at the SMBB Autoparts warehouse",
+  "Kenali lebih dekat lingkungan kerja dan fasilitas kami di Batam.": "Take a closer look at our workplace and facilities in Batam.",
+  "Brand yang kami sediakan": "Brands We Carry", "Katalog": "Catalog", "Produk Suku Cadang": "Auto Parts",
+  "Lampu Depan Mobil": "Headlights", "Headlamp berbagai model dengan pencahayaan terang dan pemasangan presisi.": "Bright headlights in a range of models, designed for a precise fit.",
+  "Kaca Mobil": "Car Windows", "Kaca depan, samping, dan belakang dengan kualitas tempered sesuai standar keamanan.": "Tempered front, side, and rear windows that meet safety standards.",
+  "Bumper Mobil": "Bumpers", "Bumper depan dan belakang, material kuat dan tahan benturan ringan.": "Durable front and rear bumpers built to withstand minor impacts.",
+  "Spion & Lampu Stop": "Mirrors & Tail Lights", "Kaca spion dan lampu stop original maupun aftermarket berkualitas.": "Quality genuine and aftermarket mirrors and tail lights.",
+  "Pintu & Kap Mesin": "Doors & Hoods", "Panel pintu dan kap mesin dengan fitting yang presisi ke rangka kendaraan.": "Door panels and hoods designed to fit vehicle frames precisely.",
+  "Velg & Ban": "Wheels & Tires", "Pilihan velg dan ban untuk berbagai ukuran dan tipe kendaraan.": "Wheels and tires for a wide range of vehicle types and sizes.",
+  "Engine Part": "Engine Parts", "Komponen mesin seperti gasket, timing belt, dan spare part penunjang lainnya.": "Engine components including gaskets, timing belts, and other essential parts.",
+  "Perlengkapan Mobil": "Car Accessories", "Aksesoris dan perlengkapan tambahan untuk kenyamanan berkendara.": "Accessories and extras for a more comfortable drive.",
+  "Kolaborasi": "Our Collaborations", "Mitra Asuransi": "Insurance Partners", "Asuransi Sinarmas": "Sinarmas Insurance", "Ulasan": "Reviews",
+  "Kata Klien Kami": "What Our Customers Say", "Berikut adalah beberapa ulasan dari klien kami.": "Here are a few reviews from our customers.",
+  "anonymous": "Anonymous",
+  "Untuk Suku Cadang Mobil pelayanan dan barang terbaik disini, rekomend banget!": "The service and auto parts here are excellent. Highly recommended!",
+  "Harganya lumayan bersaing dengan toko yg lain, tidak terlalu menguras kantong lahh Mantappp!!!": "The prices are competitive and easy on the wallet. Excellent!",
+  "Cari Sparepart Genuine Part terlengkap hanya di sini. Bukan kaleng-kaleng, Sparepart Genuine Part (berarti suku cadang asli yang diproduksi langsung oleh pabrikan resmi kendaraan atau mesin tersebut.)": "Looking for a great selection of genuine parts? This is the place. Genuine parts are made by the vehicle or engine's original manufacturer.",
+  "Foto sebelumnya": "Previous photo", "Foto berikutnya": "Next photo", "Pilih foto kantor": "Choose an office photo", "Tampilkan foto": "Show photo",
+  "Kirim Pesan": "Send a Message", "Isi form di bawah, kami akan segera merespons.": "Fill in the form below and we will get back to you shortly.",
+  "Nama": "Name", "Nama lengkap": "Full name", "Nomor Telepon": "Phone Number", "Telepon": "Phone", "Keperluan": "How can we help?",
+  "Tulis kebutuhan Anda...": "Tell us what you need...", "Pertanyaan dari": "Inquiry from", "Mengirim...": "Sending...",
+  "Pesan berhasil dikirim ke SMBB Autoparts.": "Your message has been sent to SMBB Autoparts.",
+  "Pesan belum terkirim. Silakan coba lagi.": "Your message could not be sent. Please try again.",
+  "Sosial Media": "Social Media", "Alamat": "Address", "Lokasi SMBB Autoparts": "SMBB Autoparts location", "Kw. Industri Tunas Bizpark": "Tunas Bizpark Industrial Estate", "Gedung Blok 11-U": "Building Block 11-U",
+}
+
+const LanguageContext = createContext({ language: "id", setLanguage: () => {} })
+
+function useTranslation() {
+  const { language, setLanguage } = useContext(LanguageContext)
+  const t = (text) => language === "en" ? englishTranslations[text] ?? text : text
+  return { language, setLanguage, t }
+}
+
+function LanguageSwitcher() {
+  const { language, setLanguage, t } = useTranslation()
+
+  return (
+    <div role="group" aria-label={t("Pilih bahasa")} className="inline-flex items-center rounded-md border border-white/15 bg-[#0D0D0D] p-1 font-[Rajdhani] text-xs font-bold uppercase shadow-inner shadow-black/30">
+      <button
+        type="button"
+        aria-label={t("Bahasa Indonesia")}
+        title="Bahasa Indonesia"
+        aria-pressed={language === "id"}
+        onClick={() => setLanguage("id")}
+        className={`flex h-9 w-9 items-center justify-center rounded transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] ${language === "id" ? "bg-[#D62828] text-white shadow-sm shadow-[#D62828]/30" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}
+      >
+        <span aria-hidden="true" className="text-[11px] font-black tracking-[0.18em] leading-none">ID</span>
+        <span className="sr-only">{t("Bahasa Indonesia")}</span>
+      </button>
+      <button
+        type="button"
+        aria-label="English"
+        title="English"
+        aria-pressed={language === "en"}
+        onClick={() => setLanguage("en")}
+        className={`flex h-9 w-9 items-center justify-center rounded transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] ${language === "en" ? "bg-[#D62828] text-white shadow-sm shadow-[#D62828]/30" : "text-gray-400 hover:bg-white/5 hover:text-white"}`}
+      >
+        <span aria-hidden="true" className="text-[11px] font-black tracking-[0.18em] leading-none">EN</span>
+        <span className="sr-only">English</span>
+      </button>
+    </div>
+  )
+}
 
 const slides = [
   { img: gudang, grad: "from-[#0A0A0A] via-[#1a0a0a] to-[#3a0d0d]" },
@@ -71,7 +156,6 @@ const partners = [
   { name: "Reliance", img: reliance },
   { name: "Mega", img: mega },
   { name: "Bosowa", img: bosowa },
-  { name: "MPM", img: mpm },
 ]
 
 const products = [
@@ -100,7 +184,8 @@ const whatsappNumbers = [
 function Nav() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const items = ["Home", "Tentang", "Kantor", "Brand", "Produk", "Mitra", "Testimoni", "Kontak"]
+  const { t } = useTranslation()
+  const items = [["Home", "home"], ["Tentang", "tentang"], ["Kantor", "kantor"], ["Brand", "brand"], ["Produk", "produk"], ["Mitra", "mitra"], ["Testimoni", "testimoni"], ["Kontak", "kontak"]]
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12)
@@ -115,14 +200,18 @@ function Nav() {
         <a href="#home" className="flex items-center gap-2">
           <img src={logo} alt="SMBB Autoparts" className="h-9 w-auto" />
         </a>
-        <nav className="hidden md:flex gap-7 text-sm font-semibold tracking-wide font-[Rajdhani] text-gray-300">
-          {items.map(i => <a key={i} href={"#" + i.toLowerCase()} className="hover:text-[#D62828] transition-colors">{i.toUpperCase()}</a>)}
-        </nav>
-        <button onClick={() => setOpen(!open)} className="md:hidden text-white text-2xl leading-none">{open ? "✕" : "☰"}</button>
+        <div className="hidden md:flex items-center gap-5">
+          <nav className="flex gap-7 text-sm font-semibold tracking-wide font-[Rajdhani] text-gray-300">
+            {items.map(([label, id]) => <a key={id} href={`#${id}`} className="hover:text-[#D62828] transition-colors">{t(label).toUpperCase()}</a>)}
+          </nav>
+          <LanguageSwitcher />
+        </div>
+        <button type="button" aria-label={t(open ? "Tutup menu" : "Buka menu")} aria-expanded={open} onClick={() => setOpen(!open)} className="md:hidden text-white text-2xl leading-none">{open ? "✕" : "☰"}</button>
       </div>
       {open && (
         <div className="md:hidden bg-black border-t border-white/10 px-5 pb-4 flex flex-col gap-3 text-gray-300 font-[Rajdhani] font-semibold">
-          {items.map(i => <a key={i} href={"#" + i.toLowerCase()} onClick={() => setOpen(false)} className="py-1">{i.toUpperCase()}</a>)}
+          {items.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)} className="py-1">{t(label).toUpperCase()}</a>)}
+          <LanguageSwitcher />
         </div>
       )}
     </header>
@@ -131,6 +220,7 @@ function Nav() {
 
 function Home() {
   const [i, setI] = useState(0)
+  const { t } = useTranslation()
 
   const goToNextSlide = () => {
     setI((prev) => (prev + 1) % slides.length)
@@ -152,7 +242,7 @@ function Home() {
           <div className="absolute inset-0 overflow-hidden">
             <img
               src={s.img}
-              alt="SMBB Autoparts slide"
+              alt={t("SMBB Autoparts slide")}
               className="h-full w-full object-cover object-center opacity-60 scale-[1.15] sm:scale-105"
             />
           </div>
@@ -162,7 +252,7 @@ function Home() {
       <div className="absolute -right-24 top-0 bottom-0 w-[60%] skew-x-[-12deg] bg-gradient-to-b from-[#D62828]/25 to-transparent" />
       <button
         type="button"
-        aria-label="Next slide"
+        aria-label={t("Slide berikutnya")}
         onClick={goToNextSlide}
         className="absolute right-3 sm:right-5 top-1/2 z-20 -translate-y-1/2 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-white/20 bg-black/30 text-xl sm:text-2xl text-white backdrop-blur-sm transition hover:border-[#D62828] hover:bg-[#D62828]/20"
       >
@@ -172,7 +262,7 @@ function Home() {
         <img src={logohome} alt="SMBB Autoparts" className="w-[220px] sm:w-[420px] md:w-[500px] mb-4 sm:mb-6" />
         <h1 className="chrome-text font-[Rajdhani] font-bold uppercase leading-[0.95] text-[clamp(1.2rem,5vw,3.2rem)] tracking-wide whitespace-normal sm:whitespace-nowrap max-w-[90vw]">PT Selalu Maju Bersama Batam</h1>
         <p className="text-[#D62828] text-base sm:text-xl md:text-4xl mt-3 font-[Rajdhani] font-bold uppercase tracking-[0.1em] sm:tracking-[0.15em]">Your Best Partner</p>
-        <a href="#kontak" className="mt-6 sm:mt-8 inline-block bg-[#D62828] text-white font-[Rajdhani] font-bold uppercase tracking-wide px-5 py-2.5 sm:px-7 sm:py-3 w-fit hover:bg-[#b81f1f] transition">Hubungi Kami</a>
+        <a href="#kontak" className="mt-6 sm:mt-8 inline-block bg-[#D62828] text-white font-[Rajdhani] font-bold uppercase tracking-wide px-5 py-2.5 sm:px-7 sm:py-3 w-fit hover:bg-[#b81f1f] transition">{t("Hubungi Kami")}</a>
       </div>
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
         {slides.map((_, idx) => <span key={idx} className={`h-1.5 rounded-full transition-all ${idx === i ? "w-6 bg-[#D62828]" : "w-1.5 bg-white/30"}`} />)}
@@ -182,24 +272,26 @@ function Home() {
 }
 
 function About() {
+  const { t } = useTranslation()
+
   return (
     <section id="tentang" className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center">
       <div className="border-l-4 border-[#D62828] rounded-2xl overflow-hidden">
-        <img src={fotoPerusahaan} alt="Kantor SMBB Autoparts" className="aspect-[4/3] w-full object-cover pl-4 rounded-2xl" />
+        <img src={fotoPerusahaan} alt={t("Kantor SMBB Autoparts")} className="aspect-[4/3] w-full object-cover pl-4 rounded-2xl" />
       </div>
       <div>
-        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">Tentang Kami</p>
+        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">{t("Tentang Kami")}</p>
         <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-4">Your Best Partner</h2>
-        <p className="text-[15px] leading-relaxed text-gray-400 mb-4 max-w-[62ch]">SMBB Autoparts hadir sebagai penyedia suku cadang berkualitas di Kota Batam, melayani bengkel dan pelanggan perorangan dengan stok lengkap dan original.</p>
-        <p className="text-[15px] leading-relaxed text-gray-400 mb-6 max-w-[62ch]">Kami memilih setiap produk yang sudah sesuai dengan peraturan dan ketentuan yang berlaku.</p>
+        <p className="text-[15px] leading-relaxed text-gray-400 mb-4 max-w-[62ch]">{t("SMBB Autoparts hadir sebagai penyedia suku cadang berkualitas di Kota Batam, melayani bengkel dan pelanggan perorangan dengan stok lengkap dan original.")}</p>
+        <p className="text-[15px] leading-relaxed text-gray-400 mb-6 max-w-[62ch]">{t("Kami memilih setiap produk yang sudah sesuai dengan peraturan dan ketentuan yang berlaku.")}</p>
         <div className="grid sm:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-[Rajdhani] font-bold uppercase text-white mb-1">Visi</h3>
-            <p className="text-sm text-gray-400">Menjadikan perusahaan SMBB AutoParts sebagai perusahaan berkelas di tingkat nasional dengan layanan service terbaik dan bersahabat.</p>
+            <h3 className="font-[Rajdhani] font-bold uppercase text-white mb-1">{t("Visi")}</h3>
+            <p className="text-sm text-gray-400">{t("Menjadikan perusahaan SMBB AutoParts sebagai perusahaan berkelas di tingkat nasional dengan layanan service terbaik dan bersahabat.")}</p>
           </div>
           <div>
-            <h3 className="font-[Rajdhani] font-bold uppercase text-white mb-1">Misi</h3>
-              <p className="text-sm text-gray-400">Memberikan layanan prima dan solusi bernilai tinggi kepada customer kami, sehingga tercipta hubungan yang sangat baik dan berkesinambungan.</p>
+            <h3 className="font-[Rajdhani] font-bold uppercase text-white mb-1">{t("Misi")}</h3>
+              <p className="text-sm text-gray-400">{t("Memberikan layanan prima dan solusi bernilai tinggi kepada customer kami, sehingga tercipta hubungan yang sangat baik dan berkesinambungan.")}</p>
           </div>
         </div>
       </div>
@@ -209,6 +301,7 @@ function About() {
 
 function Office() {
   const [currentPhoto, setCurrentPhoto] = useState(0)
+  const { t } = useTranslation()
   const photos = [
     { img: depan, title: "Area Resepsionis", alt: "Resepsionis kantor SMBB Autoparts" },
     { img: depan1, title: "Tampak Depan", alt: "Tampak depan kantor SMBB Autoparts" },
@@ -227,16 +320,16 @@ function Office() {
           <p className="mb-2 inline-flex items-center gap-3 font-[Rajdhani] font-bold uppercase tracking-[0.2em] text-[#D62828]">
             <span className="h-px w-8 bg-[#D62828]" />SMBB Autoparts<span className="h-px w-8 bg-[#D62828]" />
           </p>
-          <h2 className="font-[Rajdhani] text-4xl font-bold uppercase text-white sm:text-5xl">Kantor Kami</h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-400 sm:text-base">Kenali lebih dekat lingkungan kerja dan fasilitas kami di Batam.</p>
+          <h2 className="font-[Rajdhani] text-4xl font-bold uppercase text-white sm:text-5xl">{t("Kantor Kami")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-400 sm:text-base">{t("Kenali lebih dekat lingkungan kerja dan fasilitas kami di Batam.")}</p>
         </div>
         <div className="mx-auto max-w-5xl">
           <figure className="overflow-hidden rounded-lg border border-white/10 bg-black shadow-2xl shadow-black/40">
             <div className="relative aspect-[16/9] overflow-hidden bg-black">
-              <img src={photos[currentPhoto].img} alt={photos[currentPhoto].alt} className="h-full w-full object-cover" />
+              <img src={photos[currentPhoto].img} alt={t(photos[currentPhoto].alt)} className="h-full w-full object-cover" />
               <button
                 type="button"
-                aria-label="Foto sebelumnya"
+                aria-label={t("Foto sebelumnya")}
                 onClick={() => setCurrentPhoto((index) => (index - 1 + photos.length) % photos.length)}
                 className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl text-white backdrop-blur-sm transition hover:border-[#D62828] hover:bg-[#D62828] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] sm:left-5 sm:h-12 sm:w-12"
               >
@@ -244,7 +337,7 @@ function Office() {
               </button>
               <button
                 type="button"
-                aria-label="Foto berikutnya"
+                aria-label={t("Foto berikutnya")}
                 onClick={() => setCurrentPhoto((index) => (index + 1) % photos.length)}
                 className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl text-white backdrop-blur-sm transition hover:border-[#D62828] hover:bg-[#D62828] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] sm:right-5 sm:h-12 sm:w-12"
               >
@@ -252,15 +345,15 @@ function Office() {
               </button>
             </div>
             <figcaption className="flex min-h-16 items-center justify-center border-t border-[#D62828]/40 bg-gradient-to-r from-[#160707] via-[#241010] to-[#160707] px-14 py-3 sm:min-h-[76px]">
-              <span className="text-center font-[Rajdhani] text-3xl font-bold uppercase text-white sm:text-4xl">{photos[currentPhoto].title}</span>
+              <span className="text-center font-[Rajdhani] text-3xl font-bold uppercase text-white sm:text-4xl">{t(photos[currentPhoto].title)}</span>
             </figcaption>
             <div className="flex items-center justify-between gap-4 border-t border-white/10 bg-[#111] px-4 py-3 sm:px-6">
-              <div className="flex items-center gap-2" aria-label="Pilih foto kantor">
+              <div className="flex items-center gap-2" role="group" aria-label={t("Pilih foto kantor")}>
                 {photos.map((photo, index) => (
                   <button
                     key={photo.title}
                     type="button"
-                    aria-label={`Tampilkan foto ${photo.title}`}
+                    aria-label={`${t("Tampilkan foto")} ${t(photo.title)}`}
                     aria-current={currentPhoto === index ? "true" : undefined}
                     onClick={() => setCurrentPhoto(index)}
                     className={`h-2 rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] ${currentPhoto === index ? "w-7 bg-[#D62828]" : "w-2 bg-white/30 hover:bg-white/60"}`}
@@ -278,9 +371,10 @@ function Office() {
 
 function Brand() {
   const loop = [...brandLogos, ...brandLogos]
+  const { t } = useTranslation()
   return (
     <section id="brand" className="bg-black border-y border-white/10 py-16 overflow-hidden">
-      <p className="text-center text-[#D62828] text-xl font-[Rajdhani] font-semibold uppercase tracking-widest mb-8">Brand yang kami sediakan</p>
+      <p className="text-center text-[#D62828] text-xl font-[Rajdhani] font-semibold uppercase tracking-widest mb-8">{t("Brand yang kami sediakan")}</p>
       <div className="flex w-max marquee">
         {loop.map((b, idx) => (
           <div key={idx} className="w-[180px] mx-4 h-24 border border-white/10 flex items-center justify-center shrink-0 px-4">
@@ -293,19 +387,21 @@ function Brand() {
 }
 
 function Product() {
+  const { t } = useTranslation()
+
   return (
     <section id="produk" className="max-w-6xl mx-auto px-6 py-24">
-      <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">Katalog</p>
-      <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-10">Produk Suku Cadang</h2>
+      <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">{t("Katalog")}</p>
+      <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-10">{t("Produk Suku Cadang")}</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.map((p, idx) => (
           <div key={idx} className="border border-white/10 overflow-hidden hover:border-[#D62828] transition group">
             <div className="aspect-[4/3] overflow-hidden">
-              <img src={p.img} alt={p.t} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+              <img src={p.img} alt={t(p.t)} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
             </div>
             <div className="p-5">
-              <h3 className="font-[Rajdhani] font-bold uppercase text-lg mb-2">{p.t}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{p.d}</p>
+              <h3 className="font-[Rajdhani] font-bold uppercase text-lg mb-2">{t(p.t)}</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">{t(p.d)}</p>
             </div>
           </div>
         ))}
@@ -315,11 +411,13 @@ function Product() {
 }
 
 function Partner() {
+  const { t } = useTranslation()
+
   return (
     <section id="mitra" className="bg-[#0D0D0D] border-y border-white/10 py-24">
       <div className="max-w-6xl mx-auto px-6">
-        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">Kolaborasi</p>
-        <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-10">Mitra Asuransi</h2>
+        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">{t("Kolaborasi")}</p>
+        <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-10">{t("Mitra Asuransi")}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
           {partners.map((p, idx) => (
             <div
@@ -336,11 +434,11 @@ function Partner() {
               <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-[#D62828]/10 rounded-full blur-2xl group-hover:bg-[#D62828]/20 transition-colors" />
               <img
                 src={p.img}
-                alt={p.name}
+                alt={t(p.name)}
                 className="relative h-16 w-auto object-contain opacity-80 group-hover:opacity-100 transition-all duration-300"
               />
               <span className="relative font-[Rajdhani] font-semibold text-gray-700 group-hover:text-black text-xs text-center tracking-wide transition-colors">
-                {p.name}
+                {t(p.name)}
               </span>
             </div>
           ))}
@@ -355,17 +453,19 @@ function Stars({ n }) {
 }
 
 function Testimoni() {
+  const { t: translate } = useTranslation()
+
   return (
     <section id="testimoni" className="max-w-6xl mx-auto px-6 py-24">
-      <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">Ulasan</p>
-      <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-3">Kata Klien Kami</h2>
-      <p className="text-sm text-gray-500 mb-10 max-w-[62ch]">Berikut adalah beberapa ulasan dari klien kami.</p>
+      <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">{translate("Ulasan")}</p>
+      <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-3">{translate("Kata Klien Kami")}</h2>
+      <p className="text-sm text-gray-500 mb-10 max-w-[62ch]">{translate("Berikut adalah beberapa ulasan dari klien kami.")}</p>
       <div className="grid sm:grid-cols-3 gap-6">
         {testimonials.map((t, idx) => (
           <div key={idx} className="bg-[#0D0D0D] border border-white/10 p-6">
             <Stars n={t.stars} />
-            <p className="text-sm text-gray-400 leading-relaxed mb-4">"{t.r}"</p>
-            <p className="font-[Rajdhani] font-bold text-sm text-white">{t.n}</p>
+            <p className="text-sm text-gray-400 leading-relaxed mb-4">"{translate(t.r)}"</p>
+            <p className="font-[Rajdhani] font-bold text-sm text-white">{translate(t.n)}</p>
           </div>
         ))}
       </div>
@@ -455,6 +555,7 @@ function IconNote() {
 function ContactForm() {
   const [form, setForm] = useState({ nama: "", telepon: "", keperluan: "" })
   const [status, setStatus] = useState("")
+  const { t } = useTranslation()
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -467,10 +568,10 @@ function ContactForm() {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          _subject: `Pertanyaan dari ${form.nama}`,
-          Nama: form.nama,
-          Telepon: form.telepon,
-          Keperluan: form.keperluan,
+          _subject: `${t("Pertanyaan dari")} ${form.nama}`,
+          [t("Nama")]: form.nama,
+          [t("Telepon")]: form.telepon,
+          [t("Keperluan")]: form.keperluan,
         }),
       })
 
@@ -489,20 +590,20 @@ function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="flex max-w-xl flex-col gap-4 bg-[#0D0D0D] border border-white/10 rounded-xl p-5 sm:p-6">
       <div>
-        <h3 className="font-[Rajdhani] font-bold uppercase text-lg mb-1">Kirim Pesan</h3>
-        <p className="text-xs text-gray-500">Isi form di bawah, kami akan segera merespons.</p>
+        <h3 className="font-[Rajdhani] font-bold uppercase text-lg mb-1">{t("Kirim Pesan")}</h3>
+        <p className="text-xs text-gray-500">{t("Isi form di bawah, kami akan segera merespons.")}</p>
       </div>
 
       <div>
-        <label className="text-xs font-[Rajdhani] font-bold uppercase tracking-wide text-gray-400 mb-1.5 block">Nama</label>
+        <label className="text-xs font-[Rajdhani] font-bold uppercase tracking-wide text-gray-400 mb-1.5 block">{t("Nama")}</label>
         <div className="flex items-center gap-3">
           <IconUser className="text-gray-500" />
-          <input name="nama" required placeholder="Nama lengkap" value={form.nama} onChange={handleChange} className={fieldClass} />
+          <input name="nama" required placeholder={t("Nama lengkap")} value={form.nama} onChange={handleChange} className={fieldClass} />
         </div>
       </div>
 
       <div>
-        <label className="text-xs font-[Rajdhani] font-bold uppercase tracking-wide text-gray-400 mb-1.5 block">Nomor Telepon</label>
+        <label className="text-xs font-[Rajdhani] font-bold uppercase tracking-wide text-gray-400 mb-1.5 block">{t("Nomor Telepon")}</label>
         <div className="flex items-center gap-3">
           <IconPhone className="text-gray-500" />
           <input name="telepon" required placeholder="08xx xxxx xxxx" value={form.telepon} onChange={handleChange} className={fieldClass} />
@@ -510,10 +611,10 @@ function ContactForm() {
       </div>
 
       <div>
-        <label className="text-xs font-[Rajdhani] font-bold uppercase tracking-wide text-gray-400 mb-1.5 block">Keperluan</label>
+        <label className="text-xs font-[Rajdhani] font-bold uppercase tracking-wide text-gray-400 mb-1.5 block">{t("Keperluan")}</label>
         <div className="flex items-start gap-3">
           <IconNote className="mt-3 text-gray-500" />
-          <textarea name="keperluan" required rows={4} placeholder="Tulis kebutuhan Anda..." value={form.keperluan} onChange={handleChange} className={`${fieldClass} resize-y`} />
+          <textarea name="keperluan" required rows={4} placeholder={t("Tulis kebutuhan Anda...")} value={form.keperluan} onChange={handleChange} className={`${fieldClass} resize-y`} />
         </div>
       </div>
 
@@ -522,20 +623,22 @@ function ContactForm() {
         disabled={status === "sending"}
         className="mt-1 bg-[#D62828] hover:bg-[#b81f1f] disabled:cursor-wait disabled:opacity-60 active:scale-[0.98] text-white font-[Rajdhani] font-bold uppercase tracking-wide py-3.5 rounded-lg transition-all"
       >
-        {status === "sending" ? "Mengirim..." : "Kirim Pesan"}
+        {status === "sending" ? t("Mengirim...") : t("Kirim Pesan")}
       </button>
-      {status === "success" && <p className="text-sm text-green-400" role="status">Pesan berhasil dikirim ke SMBB Autoparts.</p>}
-      {status === "error" && <p className="text-sm text-red-400" role="alert">Pesan belum terkirim. Silakan coba lagi.</p>}
+      {status === "success" && <p className="text-sm text-green-400" role="status">{t("Pesan berhasil dikirim ke SMBB Autoparts.")}</p>}
+      {status === "error" && <p className="text-sm text-red-400" role="alert">{t("Pesan belum terkirim. Silakan coba lagi.")}</p>}
     </form>
   )
 }
 
 function Contact() {
+  const { t } = useTranslation()
+
   return (
     <section id="kontak" className="bg-black border-t border-white/10 py-24 text-white">
       <div className="max-w-6xl mx-auto px-6">
-        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">Hubungi Kami</p>
-        <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-10">Kontak</h2>
+        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">{t("Hubungi Kami")}</p>
+        <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-10">{t("Kontak")}</h2>
 
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="flex flex-col gap-8">
@@ -564,7 +667,7 @@ function Contact() {
 
           <div className="rounded-xl overflow-hidden border border-white/10 min-h-[420px] lg:min-h-0">
             <iframe
-              title="Lokasi SMBB Autoparts"
+              title={t("Lokasi SMBB Autoparts")}
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.0706747746094!2d104.07405779999999!3d1.1092149999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d98967fd7afab1%3A0x9ed8e86a795f2931!2sPT%20Selalu%20Maju%20Bersama%20Batam!5e0!3m2!1sen!2sid!4v1790436057644!5m2!1sen!2sid"
               width="100%" height="100%"
               style={{ border: 0, minHeight: 420 }}
@@ -581,6 +684,8 @@ function Contact() {
 }
 
 function Footer() {
+  const { t } = useTranslation()
+
   return (
     <section id="kontak" className="bg-black border-t border-white/10 py-24 text-white">
       <div className="max-w-6xl mx-auto px-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -603,7 +708,7 @@ function Footer() {
         {/* Sosial Media */}
         <div>
           <h3 className="font-[Rajdhani] font-bold uppercase text-[#D62828] mb-4">
-            Sosial Media
+            {t("Sosial Media")}
           </h3>
 
           <div className="space-y-2 text-gray-400 text-sm">
@@ -661,13 +766,13 @@ function Footer() {
         {/* Alamat */}
         <div>
           <h3 className="font-[Rajdhani] font-bold uppercase text-[#D62828] mb-4">
-            Alamat
+            {t("Alamat")}
           </h3>
 
           <div className="flex items-start gap-2 text-gray-400 text-sm">
             <IconPin />
             <span>
-              Kw. Industri Tunas Bizpark, Gedung Blok 11-U, Belian,
+              {t("Kw. Industri Tunas Bizpark")}, {t("Gedung Blok 11-U")}, Belian,
               Batam Kota, Batam City, Riau Islands 29464
             </span>
           </div>
@@ -683,8 +788,23 @@ function Footer() {
 }
 
 export default function App() {
+  const [language, setLanguage] = useState(() => {
+    try {
+      return localStorage.getItem("smbb-language") === "en" ? "en" : "id"
+    } catch {
+      return "id"
+    }
+  })
+
+  useEffect(() => {
+    document.documentElement.lang = language
+    try {
+      localStorage.setItem("smbb-language", language)
+    } catch {}
+  }, [language])
+
   return (
-    <>
+    <LanguageContext.Provider value={{ language, setLanguage }}>
       <Nav />
       <Home />
       <About />
@@ -695,6 +815,6 @@ export default function App() {
       <Testimoni />
       <Contact />
       <Footer />
-    </>
+    </LanguageContext.Provider>
   )
 }
