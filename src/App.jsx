@@ -2,9 +2,16 @@ import { useState, useEffect } from 'react'
 import logo from './assets/logo.png'
 import logohome from './assets/logohome.png'
 import fotoPerusahaan from './assets/FotoPerusahaan.jpg'
-import videoPerusahaan from './assets/vidio.mp4'
+import banner from './assets/banner.jpg'
 import gudang from './assets/Gudang.jpg'
+import gudang1 from './assets/gudang1.jpg'
 import depan from './assets/depan.jpg'
+import depan1 from './assets/depan1.jpeg'
+import gudangbumper from './assets/gudangbumper.jpeg'
+import gudangkaca from './assets/gudangkaca.jpg'
+import gudanglampu from './assets/gudanglampu.jpeg'
+import gudangpintu from './assets/gudangpintu.jpeg'
+import ruangmeeting from './assets/ruangmeeting.jpg'
 import load from './assets/load.jpg'
 import toyota from './assets/brands/toyota.png'
 import honda from './assets/brands/honda.png'
@@ -39,6 +46,7 @@ const slides = [
   { img: gudang, grad: "from-[#0A0A0A] via-[#1a0a0a] to-[#3a0d0d]" },
   { img: depan, grad: "from-[#120202] via-[#2a0808] to-[#0A0A0A]" },
   { img: load, grad: "from-[#1a0a0a] via-[#0A0A0A] to-[#2a0d0d]" },
+  
 ]
 const brandLogos = [
   { name: "Toyota", img: toyota },
@@ -92,7 +100,7 @@ const whatsappNumbers = [
 function Nav() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const items = ["Home", "Tentang", "Brand", "Produk", "Mitra", "Testimoni", "Kontak"]
+  const items = ["Home", "Tentang", "Kantor", "Brand", "Produk", "Mitra", "Testimoni", "Kontak"]
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12)
@@ -199,20 +207,70 @@ function About() {
   )
 }
 
-function OurCompany() {
+function Office() {
+  const [currentPhoto, setCurrentPhoto] = useState(0)
+  const photos = [
+    { img: depan, title: "Area Resepsionis", alt: "Resepsionis kantor SMBB Autoparts" },
+    { img: depan1, title: "Tampak Depan", alt: "Tampak depan kantor SMBB Autoparts" },
+    { img: ruangmeeting, title: "Ruang Meeting", alt: "Ruang meeting kantor SMBB Autoparts" },
+    { img: gudang1, title: "Area Gudang", alt: "Rak penyimpanan suku cadang di gudang SMBB Autoparts" },
+    { img: gudangbumper, title: "Rak Bumper", alt: "Rak penyimpanan bumper mobil di gudang SMBB Autoparts" },
+    { img: gudangkaca, title: "Rak Kaca Mobil", alt: "Rak penyimpanan kaca mobil di gudang SMBB Autoparts" },
+    { img: gudanglampu, title: "Rak Lampu Mobil", alt: "Rak penyimpanan lampu mobil di gudang SMBB Autoparts" },
+    { img: gudangpintu, title: "Rak Pintu & Kap Mesin", alt: "Rak penyimpanan pintu dan kap mesin mobil di gudang SMBB Autoparts" },
+  ]
+
   return (
-    <section className="bg-[#0D0D0D] border-y border-white/10 py-16 sm:py-20">
+    <section id="kantor" className="border-y border-white/10 bg-[#0D0D0D] py-20 sm:py-24">
       <div className="max-w-6xl mx-auto px-6">
-        <p className="text-[#D62828] font-[Rajdhani] font-bold uppercase tracking-widest mb-2">SMBB Autoparts</p>
-        <h2 className="text-3xl font-[Rajdhani] font-bold uppercase mb-8">Profile Company</h2>
-        <video
-          className="w-full aspect-video bg-black object-contain border border-white/10 rounded-3xl"
-          src={videoPerusahaan}
-          controls
-          playsInline
-          preload="metadata"
-          aria-label="Video perusahaan SMBB Autoparts"
-        />
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <p className="mb-2 inline-flex items-center gap-3 font-[Rajdhani] font-bold uppercase tracking-[0.2em] text-[#D62828]">
+            <span className="h-px w-8 bg-[#D62828]" />SMBB Autoparts<span className="h-px w-8 bg-[#D62828]" />
+          </p>
+          <h2 className="font-[Rajdhani] text-4xl font-bold uppercase text-white sm:text-5xl">Kantor Kami</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-400 sm:text-base">Kenali lebih dekat lingkungan kerja dan fasilitas kami di Batam.</p>
+        </div>
+        <div className="mx-auto max-w-5xl">
+          <figure className="overflow-hidden rounded-lg border border-white/10 bg-black shadow-2xl shadow-black/40">
+            <div className="relative aspect-[16/9] overflow-hidden bg-black">
+              <img src={photos[currentPhoto].img} alt={photos[currentPhoto].alt} className="h-full w-full object-cover" />
+              <button
+                type="button"
+                aria-label="Foto sebelumnya"
+                onClick={() => setCurrentPhoto((index) => (index - 1 + photos.length) % photos.length)}
+                className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl text-white backdrop-blur-sm transition hover:border-[#D62828] hover:bg-[#D62828] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] sm:left-5 sm:h-12 sm:w-12"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                aria-label="Foto berikutnya"
+                onClick={() => setCurrentPhoto((index) => (index + 1) % photos.length)}
+                className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/60 text-2xl text-white backdrop-blur-sm transition hover:border-[#D62828] hover:bg-[#D62828] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] sm:right-5 sm:h-12 sm:w-12"
+              >
+                ›
+              </button>
+            </div>
+            <figcaption className="flex min-h-16 items-center justify-center border-t border-[#D62828]/40 bg-gradient-to-r from-[#160707] via-[#241010] to-[#160707] px-14 py-3 sm:min-h-[76px]">
+              <span className="text-center font-[Rajdhani] text-3xl font-bold uppercase text-white sm:text-4xl">{photos[currentPhoto].title}</span>
+            </figcaption>
+            <div className="flex items-center justify-between gap-4 border-t border-white/10 bg-[#111] px-4 py-3 sm:px-6">
+              <div className="flex items-center gap-2" aria-label="Pilih foto kantor">
+                {photos.map((photo, index) => (
+                  <button
+                    key={photo.title}
+                    type="button"
+                    aria-label={`Tampilkan foto ${photo.title}`}
+                    aria-current={currentPhoto === index ? "true" : undefined}
+                    onClick={() => setCurrentPhoto(index)}
+                    className={`h-2 rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D62828] ${currentPhoto === index ? "w-7 bg-[#D62828]" : "w-2 bg-white/30 hover:bg-white/60"}`}
+                  />
+                ))}
+              </div>
+              <span className="shrink-0 font-[Rajdhani] text-sm font-semibold tabular-nums text-gray-400" aria-live="polite">{String(currentPhoto + 1).padStart(2, "0")} <span className="text-[#D62828]">/</span> {String(photos.length).padStart(2, "0")}</span>
+            </div>
+          </figure>
+        </div>
       </div>
     </section>
   )
@@ -630,7 +688,7 @@ export default function App() {
       <Nav />
       <Home />
       <About />
-      <OurCompany />
+      <Office />
       <Brand />
       <Product />
       <Partner />
