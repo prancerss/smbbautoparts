@@ -3,4 +3,4 @@ dist
 .env
 .DS_Store
 .node_modules
-.vidio.mp4
+src/assets/vidio.mp4
